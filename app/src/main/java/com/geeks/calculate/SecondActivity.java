@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 public class SecondActivity extends AppCompatActivity {
     TextView resultView;
+
     Button buttonNext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
