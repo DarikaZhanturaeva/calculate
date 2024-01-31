@@ -2,8 +2,10 @@ package com.geeks.calculate;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButton;
@@ -12,6 +14,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView textView;
     private Integer firstOperand;
     private Integer secondOperand;
+    private Integer result;
+    private Button button;
     private Boolean isOperationClick;
     private String operation;
 
@@ -20,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         textView = findViewById(R.id.text_view);
+        button = findViewById(R.id.btn_2);
     }
 
     public void OnNumberClick(View view) {
@@ -33,11 +38,12 @@ public class MainActivity extends AppCompatActivity {
                 textView.append(text);
             }
         }
+        button.setVisibility(View.GONE);
         isOperationClick = false;
     }
 
     public void OnOperationClick(View view) {
-        String data = textView.getText().toString();
+        button.setVisibility(View.GONE);
         if (view.getId() == R.id.btn_plus) {
             firstOperand = Integer.valueOf(textView.getText().toString());
             operation = "+";
@@ -57,22 +63,32 @@ public class MainActivity extends AppCompatActivity {
         } else if (view.getId() == R.id.btn_egual) {
             secondOperand = Integer.valueOf(textView.getText().toString());
             if (operation.equals("+")) {
-                Integer result = firstOperand + secondOperand;
+                result = firstOperand + secondOperand;
                 textView.setText(result.toString());
             } else if (operation.equals("-")) {
-                Integer result = firstOperand - secondOperand;
+                result = firstOperand - secondOperand;
                 textView.setText(result.toString());
             } else if (operation.equals("*")) {
-                Integer result = firstOperand * secondOperand;
+                result = firstOperand * secondOperand;
                 textView.setText(result.toString());
             } else if (operation.equals("/")) {
                 if (secondOperand == 0) {
                     textView.setText("Error");
                 } else {
-                    Integer result = firstOperand / secondOperand;
-                    textView.setText(result.toString());
+                    result = firstOperand / secondOperand;
                 }
             }
+            textView.setText(result.toString());
+            button.setVisibility(View.VISIBLE);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+                    intent.putExtra("result", result);
+                    startActivity(intent);
+                    finish();
+                }
+            });
 
         }
         isOperationClick = true;
